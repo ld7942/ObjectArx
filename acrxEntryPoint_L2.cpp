@@ -28,18 +28,18 @@
 //-----------------------------------------------------------------------------
 #define szRDS _RXST("LD")
 
-AcDbObjectId CreateLine() {	//´´½¨Ò»ÌõÖ±Ïß
-	AcGePoint3d StartPoint(0.0, 0.0, 0.0);	//´´½¨ÈýÎ¬Æðµã
-	AcGePoint3d EndPoint(10.0, 10.0, 0.0);	//´´½¨ÈýÎ¬ÖÕµã
-	AcDbLine* pLine = new AcDbLine(StartPoint, EndPoint);	//´´½¨Ö±Ïß
+AcDbObjectId CreateLine() {	//åˆ›å»ºä¸€æ¡ç›´çº¿
+	AcGePoint3d StartPoint(0.0, 0.0, 0.0);	//åˆ›å»ºä¸‰ç»´èµ·ç‚¹
+	AcGePoint3d EndPoint(10.0, 10.0, 0.0);	//åˆ›å»ºä¸‰ç»´ç»ˆç‚¹
+	AcDbLine* pLine = new AcDbLine(StartPoint, EndPoint);	//åˆ›å»ºç›´çº¿
 
-	AcDbBlockTable* pBlkTbl;	//´´½¨¿é±í
-	acdbHostApplicationServices()->workingDatabase()->getBlockTable(pBlkTbl,AcDb::kForRead);	//¶ÁÈ¡¿é±í
-	AcDbBlockTableRecord* pBlkRcd;	//´´½¨¼ÇÂ¼
-	pBlkTbl->getAt(ACDB_MODEL_SPACE, pBlkRcd, AcDb::kForWrite);	//Ö±ÏßÐ´Èë¼ÇÂ¼
-	pBlkTbl->close();	//¹Ø±ÕÖ¸Õë
+	AcDbBlockTable* pBlkTbl;	//åˆ›å»ºå—è¡¨
+	acdbHostApplicationServices()->workingDatabase()->getBlockTable(pBlkTbl,AcDb::kForRead);	//è¯»å–å—è¡¨
+	AcDbBlockTableRecord* pBlkRcd;	//åˆ›å»ºè®°å½•
+	pBlkTbl->getAt(ACDB_MODEL_SPACE, pBlkRcd, AcDb::kForWrite);	//ç›´çº¿å†™å…¥è®°å½•
+	pBlkTbl->close();	//å…³é—­æŒ‡é’ˆ
 
-	AcDbObjectId LineId;	//´´½¨Id
+	AcDbObjectId LineId;	//åˆ›å»ºId
 	pBlkRcd->appendAcDbEntity(LineId, pLine);	//
 	pLine->close();
 	pBlkRcd->close();
@@ -47,7 +47,7 @@ AcDbObjectId CreateLine() {	//´´½¨Ò»ÌõÖ±Ïß
 	return LineId;
 }
 
-AcDbObjectId CreateCircle() {	//´´½¨Ò»¸öÔ²
+AcDbObjectId CreateCircle() {	//åˆ›å»ºä¸€ä¸ªåœ†
 	AcGePoint3d center(9.0, 9.0, 0.0);
 	AcGeVector3d normal(0.0, 0.0, 1.0);
 	AcDbCircle* pCircle = new AcDbCircle(center, normal, 10.0);
@@ -66,7 +66,7 @@ AcDbObjectId CreateCircle() {	//´´½¨Ò»¸öÔ²
 	return CircleId;
 }
 
-void CreateLayer() {	//´´½¨Í¼²ã
+void CreateLayer() {	//åˆ›å»ºå›¾å±‚
 	AcDbLayerTable* pLayTbl;
 	acdbHostApplicationServices()->workingDatabase()->getLayerTable(pLayTbl, AcDb::kForWrite);
 	AcDbLayerTableRecord* pLayRcd = new AcDbLayerTableRecord;
@@ -78,7 +78,7 @@ void CreateLayer() {	//´´½¨Í¼²ã
 	return;
 }
 
-void CreateGroup(AcDbObjectIdArray ObjId, ACHAR* GroupName) {	//´´½¨×é
+void CreateGroup(AcDbObjectIdArray ObjId, ACHAR* GroupName) {	//åˆ›å»ºç»„
 	AcDbGroup* pGroup = new AcDbGroup(GroupName, true);
 	for (int i = 0; i < ObjId.length(); i++) {
 		pGroup->append(ObjId.at(i));
@@ -94,14 +94,14 @@ void CreateGroup(AcDbObjectIdArray ObjId, ACHAR* GroupName) {	//´´½¨×é
 	return;
 }
 
-void ChangeColor(AcDbObjectId objid, Adesk::Int16 color) {	//ÉèÖÃÊµÌåÑÕÉ«
+void ChangeColor(AcDbObjectId objid, Adesk::Int16 color) {	//è®¾ç½®å®žä½“é¢œè‰²
 	AcDbEntity* pEnt;
 	acdbOpenObject(pEnt, objid, AcDb::kForWrite);
 	pEnt->setColorIndex(color);
 	pEnt->close();
 }
 
-void DoEnt() {	//Ö´ÐÐº¯Êý
+void DoEnt() {	//æ‰§è¡Œå‡½æ•°
 	AcDbObjectId LineId = CreateLine();
 	AcDbObjectId CircleId = CreateCircle();
 	
